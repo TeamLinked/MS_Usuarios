@@ -1,0 +1,35 @@
+version: '2'
+services:
+  custom-mysql:
+    # build: ./db
+    image: mysql:8.0.2
+    environment: 
+      MYSQL_DATABASE: users
+      MYSQL_ROOT_PASSWORD: 123
+      MYSQL_PASSWORD: 123
+      MYSQL_USER: mysql
+      DATABASE_HOST: custom-mysql
+    # ports:
+    #   - 3317:3306
+  node-restapi:
+    build: ./nodejs
+    # image: teamlinked2019/usuarios-api:1
+    environment: 
+      DATABASE_HOST: custom-mysql
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: users
+      MYSQL_ROOT_PASSWORD: 123
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: 123
+      
+    ports:
+      - 4000:3000
+    depends_on: 
+      - custom-mysql
+    restart: on-failure
+
+  
+
+
+
+

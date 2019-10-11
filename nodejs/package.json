@@ -1,0 +1,23 @@
+{
+    "name": "restapi-node",
+    "version": "1.0.0",
+    "description": "",
+    "scripts": {
+        "start": "node src/index.js",
+        "db:migrate": "./node_modules/.bin/sequelize db:migrate",
+        "db:seed": "./node_modules/.bin/sequelize db:seed:all"
+    },
+    "keywords": [],
+    "author": "",
+    "licence": "ISC",
+    "dependencies": {
+        "body-parser": "^1.19.0",
+        "dotenv": "^8.1.0",
+        "express": "^4.17.1",
+        "morgan": "^1.9.1",
+        "mysql": "^2.17.1",
+        "mysql2": "^1.7.0",
+        "sequelize": "^5.19.5",
+        "sequelize-cli": "^5.5.1"
+    }
+}
