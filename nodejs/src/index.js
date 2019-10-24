@@ -17,7 +17,19 @@ async function main() {
 app.use(bodyParser.json())
 
 
-// create a usuario
+// usuario
+//get usuario id
+app.get('/api/usuarios/:usuarioId?', (req, res) => {
+    Usuario.findByPk(req.params.usuarioId).then((usuario) => {
+        return usuario;
+	}).then(user => {
+		res.json({
+			"user": user
+		});
+	}).catch(function(err) {
+		res.status(500).send('Something broke!');
+	});
+});
 
 // get all usuarios
 app.get('/api/usuarios', (req, res) => {
@@ -28,11 +40,12 @@ app.get('/api/usuarios', (req, res) => {
             })
 })
 
+//delete user, id = usuarioId?
 app.delete('/api/usuarios/:usuarioId?', (req, res) => {
     Usuario.findByPk(req.params.usuarioId).then((usuario) => {
         return usuario.destroy();
     }).then(() => {
-        res.redirect('/api/usuarios');
+        //res.redirect('/api/usuarios');
     })
     .catch(
         function (err) {
@@ -41,6 +54,7 @@ app.delete('/api/usuarios/:usuarioId?', (req, res) => {
 
 })
 
+//put user, id =  usuarioId?
 app.put("/api/usuarios/:usuarioId?", (req, res) =>
 
     Usuario.update({
@@ -65,25 +79,8 @@ app.put("/api/usuarios/:usuarioId?", (req, res) =>
             res.json(result)
         })
 );
-// create a usuario
-// app.post('/api/orgPorUserId', (req, res) => {
-//     Usuario.findByPk(req.body.id).then(() => {
 
-//         Organizacion({
-//             nombre: req.body.nombre,
-//             descripcion: req.body.descripcion,
-//             id_usuario_admin: req.body.id,
-//         }).then((resut)=>{
-//             res.json(result)
-//         })
-//     })
-//     .catch(
-//         function (err) {
-//             return res.status(400).json({ message: "Id not found" })
-//         });
-    
-// })
-
+//Post usuario
 app.post('/api/usuarios', (req, res) => {
     console.log(req.body)
     Usuario.create(req.body)
@@ -95,63 +92,147 @@ app.post('/api/usuarios', (req, res) => {
 
 
         );
-    /*
-    {
-        "nombre":"" ,
-        "apellido":"",
-        "email":"",
-        "password":"",
-        "identificacion":"",
-        "nacionalidad":"",
-        "fecha_nac":"",
-        "perf_profesional":"",
-        "perf_personal":""
-    }
-            
-    */
-
-
-
 })
 
 
+//Organizaciones//
 
-
-
-
-// find organizacions belonging to one usuario or all organizacions
-app.get('/api/organizacions/:usuarioId?', (req, res) => {
-    let query;
-    if (req.params.usuarioId) {
-        query = Organizacion.findAll({
-            include: [
-                { model: Usuario, where: { id: req.params.usuarioId } },
-                { model: Tag }
-            ]
+//organizacion por id
+app.get('/api/organizacion/:organizacionId?', (req, res) => {
+    Organizacion.findByPk(req.params.organizacionId).then((organizacion) => {
+        return organizacion;
+	}).then(organizacion => {
+		res.json({
+			"organizacion": organizacion
+		});
+	}).catch(function(err) {
+		res.status(500).send('Something broke!');
+	});
+});
+// get all usuarios
+app.get('/api/organizaciones', (req, res) => {
+    Organizacion.findAll().then(organizaciones => res.json(organizaciones))
+        .catch(
+            function (err) {
+                return res.json({ message: err })
         })
-    } else {
-        query = Organizacion.findAll({ include: [Tag, Usuario] })
-    }
-    return query.then(organizacions => res.json(organizacions))
 })
 
-
-
-
-
-
-// find organizacions by tag
-app.get('/api/organizacions/:tag/tag', (req, res) => {
-    Usuarios.findAll({
-        include: [
-            { model: Tag, where: { name: req.params.tag } }
-        ]
+//delete user, id = usuarioId?
+app.delete('/api/organizaciones/:organizacionId?', (req, res) => {
+    Organizacion.findByPk(req.params.organizacionId).then((organizacion) => {
+        return organizacion.destroy();
+    }).then(() => {
+        //res.redirect('/api/usuarios');
     })
-        .then(organizacions => res.json(organizacions))
+    .catch(
+        function (err) {
+            return res.status(400).json({ message: "Id not found" })
+        });
+
 })
 
+//put user, id =  usuarioId?
+app.put("/api/organizaciones/:organizacionId?", (req, res) =>
+
+    Organizacion.update({
+
+        nombre: req.body.nombre,
+        id_usuario_admin: req.body.id_usuario_admin,
+        descripcion: req.body.descripcion
+    },
+        {
+            where: {
+                id: req.params.organizacionId
+            }
+        }).then((result) => {
+            console.log(req.body);
+            // console.log(req.body.content);
+            res.json(result)
+        })
+);
+
+//Post usuario
+app.post('/api/organizacion', (req, res) => {
+    console.log(req.body)
+    Organizacion.create(req.body)
+        .then(organizacion => res.json(organizacion))
+        .catch(
+            function (err) {
+                return res.status(400).status(400).json({ message: err })
+            }
 
 
+        );
+})
+
+//TAGS//
+
+app.get('/api/tags/:tagId?', (req, res) => {
+    Usuario.findByPk(req.params.tagId).then((tag) => {
+        return tag;
+	}).then(tag => {
+		res.json({
+			"tag": tag
+		});
+	}).catch(function(err) {
+		res.status(500).send('Something broke!');
+	});
+});
+
+// get all usuarios
+app.get('/api/tags', (req, res) => {
+    Tag.findAll().then(tags => res.json(tags))
+        .catch(
+            function (err) {
+                return res.json({ message: err })
+        })
+})
+
+//delete user, id = usuarioId?
+app.delete('/api/tags/:tagId?', (req, res) => {
+    Tag.findByPk(req.params.organizacionId).then((tag) => {
+        return tag.destroy();
+    }).then(() => {
+        //res.redirect('/api/usuarios');
+    })
+    .catch(
+        function (err) {
+            return res.status(400).json({ message: "Id not found" })
+        });
+
+})
+
+//put user, id =  usuarioId?
+app.put("/api/tags/:tagId?", (req, res) =>
+
+    Tag.update({
+
+        nombre: req.body.nombre,
+        
+    },
+        {
+            where: {
+                id: req.params.tagId
+            }
+        }).then((result) => {
+            console.log(req.body);
+            // console.log(req.body.content);
+            res.json(result)
+        })
+);
+
+//Post usuario
+app.post('/api/tags', (req, res) => {
+    console.log(req.body)
+    Tag.create(req.body)
+        .then(tag => res.json(tag))
+        .catch(
+            function (err) {
+                return res.status(400).status(400).json({ message: err })
+            }
+        );
+})
 
 main();
 // app.listen(3000, () => console.log ('Servidor iniciado en 3000'))
