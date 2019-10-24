@@ -19,8 +19,13 @@ app.use(bodyParser.json())
 
 // usuario
 //get usuario id
-app.get('/api/usuarios/:usuarioId?', (req, res) => {
-    Usuario.findByPk(req.params.usuarioId).then((usuario) => {
+app.get('/api/usuario/:usuarioId?', (req, res) => {
+    Usuario.findOne({
+        where: {
+			id: req.params.usuarioId
+		},
+		//include: [{model: Tag, as: 'tags'}]
+    }).then((usuario) => {
         return usuario;
 	}).then(user => {
 		res.json({
@@ -99,7 +104,12 @@ app.post('/api/usuarios', (req, res) => {
 
 //organizacion por id
 app.get('/api/organizacion/:organizacionId?', (req, res) => {
-    Organizacion.findByPk(req.params.organizacionId).then((organizacion) => {
+    Organizacion.findOne({
+        where: {
+			id: req.params.organizacionId
+		},
+		//include: [{model: Tag, as: 'tags'}]
+    }).then((organizacion) => {
         return organizacion;
 	}).then(organizacion => {
 		res.json({
@@ -153,7 +163,7 @@ app.put("/api/organizaciones/:organizacionId?", (req, res) =>
 );
 
 //Post usuario
-app.post('/api/organizacion', (req, res) => {
+app.post('/api/organizaciones', (req, res) => {
     console.log(req.body)
     Organizacion.create(req.body)
         .then(organizacion => res.json(organizacion))
@@ -168,8 +178,13 @@ app.post('/api/organizacion', (req, res) => {
 
 //TAGS//
 
-app.get('/api/tags/:tagId?', (req, res) => {
-    Usuario.findByPk(req.params.tagId).then((tag) => {
+app.get('/api/tag/:tagId?', (req, res) => {
+    Tag.findOne({
+        where: {
+			id: req.params.tagId
+		},
+		//include: [{model: Tag, as: 'tags'}]
+    }).then((tag) => {
         return tag;
 	}).then(tag => {
 		res.json({
@@ -179,7 +194,6 @@ app.get('/api/tags/:tagId?', (req, res) => {
 		res.status(500).send('Something broke!');
 	});
 });
-
 // get all usuarios
 app.get('/api/tags', (req, res) => {
     Tag.findAll().then(tags => res.json(tags))

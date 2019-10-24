@@ -1,5 +1,5 @@
 module.exports = (sequelize, type) => {
-  return sequelize.define('usuario', {
+  var Usuario = sequelize.define('usuario', {
     id: {
       type: type.INTEGER,
       primaryKey: true,
@@ -60,6 +60,10 @@ module.exports = (sequelize, type) => {
       allowNull: true
 
     },
-
   })
+  
+  Usuario.associate = models => {
+    Usuario.belongsToMany(models.Tag, {through: 'TagUsuario', as: 'tags'});
+  };
+  return Usuario;
 }
