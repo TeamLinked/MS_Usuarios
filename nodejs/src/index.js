@@ -29,11 +29,96 @@ app.post('/api/usuario/tags/:usuarioId?', (req, res) => {
     .then(usuario => {
         //return res.status(400).status(400).json(usuario);
         //usuario.addTags(req.body.tagId);
-        Tag.create({
-			nombre: req.body.tag
+        Tag.findOne({
+			where: {
+			    id: req.body.id
+			}
 		}).then(function (tag) {
 			// Step Three: Add todo to user
 			return usuario.addTags([tag])
+		})
+		.then(usuario => {
+		    res.json(usuario);
+		})
+    })
+    .catch(function (err) {
+        return res.status(400).status(400).json({ message: err });
+    });
+});
+
+
+//delete tag to usuario
+
+app.delete('/api/usuario/tags/:usuarioId?', (req, res) => {
+    Usuario.findOne({
+        where: {
+			id: req.params.usuarioId
+		},
+    })
+    .then(usuario => {
+        //return res.status(400).status(400).json(usuario);
+        //usuario.addTags(req.body.tagId);
+        Tag.findOne({
+			where: {
+			    id: req.body.id
+			}
+		}).then(function (tag) {
+			// Step Three: Add todo to user
+			return usuario.removeTags([tag])
+		})
+		.then(usuario => {
+		    res.json(usuario);
+		})
+    })
+    .catch(function (err) {
+        return res.status(400).status(400).json({ message: err });
+    });
+});
+
+//post organizacion to usuario
+app.post('/api/usuario/organizaciones/:usuarioId?', (req, res) => {
+    Usuario.findOne({
+        where: {
+			id: req.params.usuarioId
+		},
+    })
+    .then(usuario => {
+        //return res.status(400).status(400).json(usuario);
+        //usuario.addTags(req.body.tagId);
+        Organizacion.findOne({
+			where: {
+                id: req.body.id
+            }
+		}).then(function (organizacion) {
+			// Step Three: Add todo to user
+			return usuario.addOrganizacion(organizacion)
+		})
+		.then(usuario => {
+		    res.json(usuario);
+		})
+    })
+    .catch(function (err) {
+        return res.status(400).status(400).json({ message: err });
+    });
+});
+
+//delete organizacion to usuario
+app.delete('/api/usuario/organizaciones/:usuarioId?', (req, res) => {
+    Usuario.findOne({
+        where: {
+			id: req.params.usuarioId
+		},
+    })
+    .then(usuario => {
+        //return res.status(400).status(400).json(usuario);
+        //usuario.addTags(req.body.tagId);
+        Organizacion.findOne({
+            where: {
+                nombre: req.params.nombre
+            }
+        }).then(function (organizacion) {
+			// Step Three: Add todo to user
+			return usuario.removeOrganizacion(organizacion)
 		})
 		.then(usuario => {
 		    res.json(usuario);
@@ -128,6 +213,64 @@ app.post('/api/usuarios', (req, res) => {
 
 
 //Organizaciones//
+
+//add Tag to Organización
+
+app.post('/api/organizacion/tags/:organizacionId?', (req, res) => {
+    Organizacion.findOne({
+        where: {
+			id: req.params.organizacionId
+		},
+    })
+    .then(organizacion => {
+        //return res.status(400).status(400).json(usuario);
+        //usuario.addTags(req.body.tagId);
+        Tag.findOne({
+			where: {
+			    id: req.body.id
+			}
+		}).then(function (tag) {
+			// Step Three: Add todo to user
+			return organizacion.addTags([tag])
+		})
+		.then(organizacion => {
+		    res.json(organizacion);
+		})
+    })
+    .catch(function (err) {
+        return res.status(400).status(400).json({ message: err });
+    });
+});
+
+
+//delete tag to usuario
+
+app.delete('/api/organizacion/tags/:organizacionId?', (req, res) => {
+    Organizacion.findOne({
+        where: {
+			id: req.params.organizacionId
+		},
+    })
+    .then(organizacion => {
+        //return res.status(400).status(400).json(usuario);
+        //usuario.addTags(req.body.tagId);
+        Tag.findOne({
+			where: {
+			    id: req.body.id
+			}
+		}).then(function (tag) {
+			// Step Three: Add todo to user
+			return Organizacion.removeTags([tag])
+		})
+		.then(organizacion => {
+		    res.json(organizacion);
+		})
+    })
+    .catch(function (err) {
+        return res.status(400).status(400).json({ message: err });
+    });
+});
+
 
 //organizacion por id
 app.get('/api/organizacion/:organizacionId?', (req, res) => {
