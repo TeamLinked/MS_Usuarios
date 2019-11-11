@@ -42,7 +42,7 @@ module.exports = (sequelize, type) => {
     },
     imagen: {
       type: type.STRING,
-      allowNull: false
+      allowNull: true
     },
     nacionalidad: {
       type: type.STRING,

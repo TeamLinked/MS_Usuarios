@@ -27,7 +27,17 @@ app.post('/api/usuario/tags/:usuarioId?', (req, res) => {
 		},
     })
     .then(usuario => {
-        usuario.addTag(req.body.tagId);
+        //return res.status(400).status(400).json(usuario);
+        //usuario.addTags(req.body.tagId);
+        Tag.create({
+			nombre: req.body.tag
+		}).then(function (tag) {
+			// Step Three: Add todo to user
+			return usuario.addTags([tag])
+		})
+		.then(usuario => {
+		    res.json(usuario);
+		})
     })
     .catch(function (err) {
         return res.status(400).status(400).json({ message: err });
