@@ -3,7 +3,7 @@ const sequelize = require('./sequelize');
 
 
 const bodyParser = require('body-parser')
-const { Usuario, Organizacion, Tag } = require('./sequelize')
+const { Usuario, Organizacion, Tag} = require('./sequelize')
 
 async function main() {
     await sequelize;
@@ -18,13 +18,29 @@ app.use(bodyParser.json())
 
 
 // usuario
+
+//post tag to usuario
+app.post('/api/usuario/tags/:usuarioId?', (req, res) => {
+    Usuario.findOne({
+        where: {
+			id: req.params.usuarioId
+		},
+    })
+    .then(usuario => {
+        usuario.addTag(req.body.tagId);
+    })
+    .catch(function (err) {
+        return res.status(400).status(400).json({ message: err });
+    });
+});
+
 //get usuario id
 app.get('/api/usuario/:usuarioId?', (req, res) => {
     Usuario.findOne({
         where: {
 			id: req.params.usuarioId
 		},
-		//include: [{model: Tag, as: 'tags'}]
+		include: [{ all: true }]
     }).then((usuario) => {
         return usuario;
 	}).then(user => {
@@ -69,6 +85,7 @@ app.put("/api/usuarios/:usuarioId?", (req, res) =>
         email: req.body.email,
         password: req.body.password,
         identificacion: req.body.identificacion,
+        imagen: req.body.imagen,
         nacionalidad: req.body.nacionalidad,
         fecha_nac: req.body.fecha_nac,
         perf_profesional: req.body.perf_profesional,
@@ -108,7 +125,7 @@ app.get('/api/organizacion/:organizacionId?', (req, res) => {
         where: {
 			id: req.params.organizacionId
 		},
-		//include: [{model: Tag, as: 'tags'}]
+		include: [{ all: true }]
     }).then((organizacion) => {
         return organizacion;
 	}).then(organizacion => {

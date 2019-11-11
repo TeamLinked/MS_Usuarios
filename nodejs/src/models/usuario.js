@@ -40,6 +40,10 @@ module.exports = (sequelize, type) => {
       allowNull: false
 
     },
+    imagen: {
+      type: type.STRING,
+      allowNull: false
+    },
     nacionalidad: {
       type: type.STRING,
       allowNull: true
@@ -62,8 +66,5 @@ module.exports = (sequelize, type) => {
     },
   })
   
-  Usuario.associate = models => {
-    Usuario.belongsToMany(models.Tag, {through: 'TagUsuario', as: 'tags'});
-  };
   return Usuario;
 }

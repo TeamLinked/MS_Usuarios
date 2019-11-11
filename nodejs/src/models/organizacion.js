@@ -20,7 +20,5 @@ module.exports = (sequelize, type) => {
             allowNull: true
 
         },
-
-
     })
 }

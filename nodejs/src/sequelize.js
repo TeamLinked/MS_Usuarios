@@ -12,10 +12,10 @@ const sequelize = new Sequelize(process.env.MYSQL_DATABASE, process.env.MYSQL_US
 const Usuario = UsuarioModel(sequelize, Sequelize)
 // OrganizacionTag will be our way of tracking relationship between Organizacion and Tag models
 // each Organizacion can have multiple tags and each Tag can have multiple organizations
+
 const OrganizacionTag = sequelize.define('organizacion_tag', {})
-
 const UsuarioOrganizacion = sequelize.define('usuario_organizacion', {})
-
+const TagUsuario = sequelize.define('tag_usuario', {})
 
 const Organizacion = OrganizacionModel(sequelize, Sequelize)
 const Tag = TagModel(sequelize, Sequelize)
@@ -25,6 +25,9 @@ Tag.belongsToMany(Organizacion, { through: OrganizacionTag, unique: false })
 
 Organizacion.belongsToMany(Usuario, { through: UsuarioOrganizacion, unique: false })
 Usuario.belongsToMany(Organizacion, { through: UsuarioOrganizacion, unique: false })
+
+Tag.belongsToMany(Usuario, { through: TagUsuario, unique: false})
+Usuario.belongsToMany(Tag, { through: TagUsuario, unique: false})
 
 sequelize
   .authenticate()

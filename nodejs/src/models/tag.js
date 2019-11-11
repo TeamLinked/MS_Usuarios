@@ -8,9 +8,5 @@ module.exports = (sequelize, type) => {
         nombre: type.STRING
     })
     
-    Tag.associate = models => {
-        Tag.belongsToMany(models.User, {through: 'TagUsuarios', as: 'usuarios'});
-    };
-    
     return Tag;
 }
