@@ -114,7 +114,7 @@ app.delete('/api/usuario/organizaciones/:usuarioId?', (req, res) => {
         //usuario.addTags(req.body.tagId);
         Organizacion.findOne({
             where: {
-                nombre: req.params.nombre
+                id: req.body.id
             }
         }).then(function (organizacion) {
 			// Step Three: Add todo to user
