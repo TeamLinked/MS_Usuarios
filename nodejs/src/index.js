@@ -147,6 +147,24 @@ app.get('/api/usuario/:usuarioId?', (req, res) => {
 	});
 });
 
+//get usuario by mail
+
+app.get('/api/usuarioByMail', (req, res) => {
+    Usuario.findOne({
+        where: {
+			email: req.body.email
+		}
+    }).then((usuario) => {
+        return usuario;
+	}).then(user => {
+		res.json({
+			"user": user
+		});
+	}).catch(function(err) {
+		res.status(500).send('Something broke!');
+	});
+});
+
 // get all usuarios
 app.get('/api/usuarios', (req, res) => {
     Usuario.findAll().then(usuarios => res.json(usuarios))
