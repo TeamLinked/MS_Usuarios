@@ -1,15 +1,18 @@
 const app = require('./app');
+var cors = require('cors')
 const sequelize = require('./sequelize');
 
+app.use(cors())
 
 const bodyParser = require('body-parser')
 const { Usuario, Organizacion, Tag} = require('./sequelize')
 
 async function main() {
     await sequelize;
-    await app.listen(3000);
+    await app.listen(4015);
     console.log('Server is corriendooooooo');
-    console.log(process.env.MYSQL_DATABASE)
+    console.log(process.env.MYSQL_DATABASE);
+    console.log("Express server listening on port " + app.get('port'));
 }
 
 

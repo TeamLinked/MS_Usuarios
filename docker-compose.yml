@@ -23,7 +23,7 @@ services:
       MYSQL_PASSWORD: 123
       
     ports:
-      - 4000:3000
+      - 4000:4015
     depends_on: 
       - custom-mysql
     restart: on-failure
