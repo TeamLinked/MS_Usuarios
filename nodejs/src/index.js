@@ -1,8 +1,5 @@
 const app = require('./app');
-var cors = require('cors')
 const sequelize = require('./sequelize');
-
-app.use(cors())
 
 const bodyParser = require('body-parser')
 const { Usuario, Organizacion, Tag} = require('./sequelize')
